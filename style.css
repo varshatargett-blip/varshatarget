@@ -441,6 +441,15 @@ img { max-width: 100%; display: block; }
 
 }
 
+body.dark .course-card{
+  background: #162233;
+  color: #1a7fa8;
+}
+body.dark .nav-btn{
+  background-color: transparent;
+  border: 2px solid transparent ;
+  color: #ccc;
+}
 
 /* ── Banner ── */
 .banner {
