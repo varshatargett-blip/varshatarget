@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HTML Tutorial — TpointTech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:           #f5f3ee;
+      --bg-card:      #ffffff;
+      --bg-nav:       #1a3a4a;
+      --bg-footer:    #1e2d3d;
+      --bg-sidebar:   #ffffff;
+      --text-primary: #111827;
+      --text-muted:   #6b7280;
+      --text-nav:     #e2eff8;
+      --accent:       #1a7fa8;
+      --accent-light: #d0eaf5;
+      --border:       #e5e7eb;
+      --shadow:       0 4px 24px rgba(0,0,0,0.07);
+      --radius:       14px;
+      --transition:   0.25s cubic-bezier(.4,0,.2,1);
+      --sidebar-w:    270px;
+      --topbar-h:     64px;
+      --topics-h:     40px;
+    }
+
+    body.dark {
+      --bg:           #0f1923;
+      --bg-card:      #162233;
+      --bg-nav:       #0a1520;
+      --bg-footer:    #0a1520;
+      --bg-sidebar:   #111e2b;
+      --text-primary: #e8f0f7;
+      --text-muted:   #8ba3b8;
+      --border:       #1e3245;
+      --accent-light: #0d2f45;
+      --shadow:       0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--bg-nav);
+      height: var(--topbar-h);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    }
+    .nav-inner {
+      max-width: 100%;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      gap: 20px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .logo-icon {
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 5px 9px;
+      border-radius: 8px;
+    }
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #fff;
+    }
+    .nav-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+    .nav-btnn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity var(--transition);
+    }
+    .nav-btnn:hover { opacity: 0.85; }
+
+    /* Theme Toggle */
+    .theme-toggle { cursor: pointer; display: flex; align-items: center; }
+    .theme-toggle input { display: none; }
+    .toggle-track {
+      width: 44px; height: 24px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      position: relative;
+      transition: background var(--transition);
+      display: flex; align-items: center; padding: 0 3px;
+    }
+    .theme-toggle input:checked + .toggle-track { background: var(--accent); }
+    .toggle-thumb {
+      width: 18px; height: 18px;
+      background: #fff; border-radius: 50%;
+      transition: transform var(--transition);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .theme-toggle input:checked + .toggle-track .toggle-thumb { transform: translateX(20px); }
+
+    /* ── TOPICS BAR ── */
+    .nav-topics {
+      position: fixed;
+      top: var(--topbar-h);
+      left: 0; right: 0;
+      z-index: 190;
+      height: var(--topics-h);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 0 16px;
+      scrollbar-width: none;
+      background: #afafaf;
+    }
+    .nav-topics::-webkit-scrollbar { display: none; }
+    .nav-topics li a {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      color: #1e3245;
+      transition: background var(--transition);
+      display: block;
+    }
+    .nav-topics li a:hover,
+    .nav-topics li a.active {
+      background: rgba(26,63,90,0.15);
+      color: #0a1f30;
+      font-weight: 600;
+    }
+    .nav-topics li a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── LAYOUT ── */
+    .page-layout {
+      display: flex;
+      margin-top: calc(var(--topbar-h) + var(--topics-h));
+      min-height: calc(100vh - var(--topbar-h) - var(--topics-h));
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: calc(var(--topbar-h) + var(--topics-h));
+      left: 0;
+      bottom: 0;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      transition: background var(--transition), transform var(--transition);
+      z-index: 100;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .sidebar-header {
+      padding: 20px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar-header .lang-icon {
+      width: 36px; height: 36px;
+      background: #e34c26;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .sidebar-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .sidebar-header span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .sidebar-section { padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .sidebar-section:last-child { border-bottom: none; }
+
+    .sidebar-section-title {
+      padding: 10px 20px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      font-size: 13.5px;
+      color: var(--text-primary);
+      transition: background var(--transition), color var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .sidebar-link:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+    .sidebar-link.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .sidebar-link.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 3px 3px 0;
+    }
+    .sidebar-link .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .sidebar-link.active .dot,
+    .sidebar-link:hover .dot { background: var(--accent); }
+
+    /* Mobile sidebar toggle */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 99;
+    }
+    .sidebar-toggle {
+      display: none;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 40px 48px 80px;
+      max-width: calc(100% - var(--sidebar-w));
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .breadcrumb a { color: var(--accent); }
+    .breadcrumb .sep { opacity: 0.4; }
+
+    /* Page Title */
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .page-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* Content Box */
+    .content-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+    }
+    .content-box h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+    .content-box p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .content-box p:last-child { margin-bottom: 0; }
+    .content-box ul {
+      padding-left: 20px;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 18px 0;
+      font-size: 14.5px;
+      color: var(--text-primary);
+      line-height: 1.65;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #1a2535;
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #0f1923;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .code-header .lang-tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .code-dots span:nth-child(1) { background: #ff5f57; }
+    .code-dots span:nth-child(2) { background: #febc2e; }
+    .code-dots span:nth-child(3) { background: #28c840; }
+
+    .copy-btn {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6);
+      border: none;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background var(--transition);
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    .code-body {
+      padding: 20px;
+      overflow-x: auto;
+    }
+    .code-body pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.75;
+      color: #e2eaf4;
+      white-space: pre;
+    }
+    .kw  { color: #c792ea; }
+    .tag { color: #f07178; }
+    .attr{ color: #ffcb6b; }
+    .str { color: #c3e88d; }
+    .cmt { color: #546e7a; font-style: italic; }
+    .val { color: #82aaff; }
+
+    /* Try it button */
+    .try-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .try-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .try-btn svg { width: 15px; height: 15px; }
+
+    /* Output preview */
+    .output-preview {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    body.dark .output-preview { background: #1a2535; color: #e2eaf4; }
+
+    /* ── NAV BUTTONS ── */
+    .nav-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .nav-page-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      cursor: pointer;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      color: var(--text-primary);
+      text-decoration: none;
+      min-width: 180px;
+    }
+    .nav-page-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+    .nav-page-btn.next { margin-left: auto; flex-direction: row-reverse; text-align: right; }
+    .nav-page-btn .btn-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+    .nav-page-btn .btn-title { font-size: 14px; font-weight: 600; font-family: 'Syne', sans-serif; }
+    .nav-page-btn svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      background: var(--border);
+      border-radius: 50px;
+      height: 6px;
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 50px;
+      width: 8%;
+      transition: width 0.6s ease;
+    }
+    .progress-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* Table of contents */
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 28px;
+    }
+    .toc h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .toc ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .toc ul li a {
+      font-size: 13.5px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .toc ul li a::before {
+      content: '→';
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .toc ul li a:hover { text-decoration: underline; }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-beginner { background: #d1fae5; color: #065f46; }
+    body.dark .badge-beginner { background: #064e3b; color: #6ee7b7; }
+    .badge-updated { background: var(--accent-light); color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; max-width: 100%; padding: 28px 20px 60px; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.visible { display: block; }
+      .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .content-box, .toc, .code-block { animation: fadeUp 0.4s ease both; }
+    .content-box:nth-child(2) { animation-delay: 0.05s; }
+    .content-box:nth-child(3) { animation-delay: 0.1s; }
+    .content-box:nth-child(4) { animation-delay: 0.15s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <nav class="nav-inner">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <div class="nav-logo">
+          <span class="logo-icon">&lt;/&gt;</span>
+          <span class="logo-text">TpointTech</span>
+        </div>
+      </div>
+      <div class="nav-right">
+        <label class="theme-toggle">
+          <input type="checkbox" id="themeToggle" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        </label>
+        <button class="nav-btnn">Sign In</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- TOPICS BAR -->
+  <ul class="nav-topics">
+    <li><a href="#" class="active">HTML</a></li>
+    <li><a href="#">CSS</a></li>
+    <li><a href="#">JavaScript</a></li>
+    <li><a href="#">SQL</a></li>
+    <li><a href="#">Python</a></li>
+    <li><a href="#">Java</a></li>
+    <li><a href="#">PHP</a></li>
+    <li><a href="#">C</a></li>
+    <li><a href="#">C++</a></li>
+    <li><a href="#">Bootstrap</a></li>
+    <li><a href="#">React</a></li>
+    <li><a href="#">MySQL</a></li>
+    <li><a href="#">jQuery</a></li>
+    <li><a href="#">NodeJS</a></li>
+    <li><a href="#">Django</a></li>
+    <li><a href="#">DSA</a></li>
+    <li><a href="#">MongoDB</a></li>
+    <li><a href="#">NextJS</a></li>
+    <li><a href="#">Angular</a></li>
+  </ul>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="page-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="lang-icon">HTML</div>
+        <div>
+          <h3>HTML Tutorial</h3>
+          <span>45 topics</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a class="sidebar-link active" href="#">
+          <span class="dot"></span>HTML Introduction
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Editors
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Basic
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Elements
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Attributes
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Headings
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Paragraphs
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Styles
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Formatting
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Comments
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Concepts</div>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Links
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Images
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Tables
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Lists
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Block & Inline
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Div
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Classes
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Id
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Iframes
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML JavaScript
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Forms</div>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Forms
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Form Attributes
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Form Elements
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Input Types
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Input Attributes
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">HTML5</div>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Semantic Elements
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Layout
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Responsive
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Computer Code
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Audio
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Video
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Canvas
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML SVG
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Geolocation
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Drag/Drop
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Web Storage
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Reference</div>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Tag Reference
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Attributes Reference
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Event Reference
+        </a>
+        <a class="sidebar-link" href="#">
+          <span class="dot"></span>HTML Color Names
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="#">Home</a>
+        <span class="sep">›</span>
+        <a href="#">HTML Tutorial</a>
+        <span class="sep">›</span>
+        <span>HTML Introduction</span>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-label">1 of 45 topics completed — Keep going! 🚀</div>
+
+      <!-- Title -->
+      <h1 class="page-title">HTML Introduction</h1>
+      <p class="page-subtitle">Learn what HTML is and how it forms the backbone of every web page.</p>
+      <div style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;">
+        <span class="badge badge-beginner">Beginner</span>
+        <span class="badge badge-updated">Updated 2025</span>
+      </div>
+
+      <!-- Table of Contents -->
+      <div class="toc">
+        <h4>On this page</h4>
+        <ul>
+          <li><a href="#what">What is HTML?</a></li>
+          <li><a href="#structure">HTML Document Structure</a></li>
+          <li><a href="#example">Your First HTML Page</a></li>
+          <li><a href="#howitworks">How HTML Works</a></li>
+        </ul>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="content-box" id="what">
+        <h2>What is HTML?</h2>
+        <p>
+          <strong>HTML</strong> stands for <strong>HyperText Markup Language</strong>. It is the standard markup language used to create and structure content on the web. HTML describes the structure of a web page using a series of elements.
+        </p>
+        <p>
+          HTML elements tell the browser how to display the content. They are represented by tags, written using angle brackets like <code style="background:var(--accent-light);color:var(--accent);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;tagname&gt;</code>.
+        </p>
+        <div class="highlight-box">
+          💡 <strong>Did you know?</strong> HTML was first created by <strong>Tim Berners-Lee</strong> in 1991. The latest version is <strong>HTML5</strong>, which introduced powerful features like canvas, audio, video, and semantic elements.
+        </div>
+        <ul>
+          <li>HTML stands for <strong>Hyper Text Markup Language</strong></li>
+          <li>HTML is the <strong>standard markup language</strong> for creating Web pages</li>
+          <li>HTML describes the <strong>structure of a Web page</strong></li>
+          <li>HTML consists of a series of <strong>elements</strong></li>
+          <li>HTML elements <strong>label pieces of content</strong> such as "this is a heading", "this is a paragraph", etc.</li>
+        </ul>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="content-box" id="structure">
+        <h2>HTML Document Structure</h2>
+        <p>Every HTML document follows a basic structure. Here is a simple example of an HTML document:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="lang-tag">HTML</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-body">
+<pre><span class="cmt">&lt;!-- Basic HTML Document Structure --&gt;</span>
+<span class="tag">&lt;!DOCTYPE</span> <span class="attr">html</span><span class="tag">&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="str">"en"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="str">"UTF-8"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My First Page<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+  <span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hello, World!<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>This is my first paragraph.<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+          </div>
+        </div>
+
+        <p>Let's break down each part:</p>
+        <ul>
+          <li><code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);">&lt;!DOCTYPE html&gt;</code> — Declares the document type as HTML5</li>
+          <li><code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);">&lt;html&gt;</code> — The root element of the page</li>
+          <li><code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);">&lt;head&gt;</code> — Contains meta information about the page</li>
+          <li><code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);">&lt;title&gt;</code> — Sets the browser tab title</li>
+          <li><code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);">&lt;body&gt;</code> — Contains the visible page content</li>
+        </ul>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="content-box" id="example">
+        <h2>Your First HTML Page</h2>
+        <p>Try editing the code below and click <strong>Run</strong> to see the result live:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="lang-tag">HTML — Editable</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div class="code-body">
+            <textarea id="liveCode" style="width:100%;background:transparent;border:none;outline:none;font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#e2eaf4;line-height:1.75;resize:vertical;min-height:120px;" spellcheck="false">&lt;h1&gt;Hello World!&lt;/h1&gt;
+&lt;p&gt;This is my first &lt;strong&gt;HTML&lt;/strong&gt; paragraph.&lt;/p&gt;
+&lt;a href="#"&gt;Click here&lt;/a&gt;</textarea>
+          </div>
+        </div>
+
+        <button class="try-btn" onclick="runCode()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Run Code
+        </button>
+
+        <div class="output-preview" id="outputPreview">
+          <h1>Hello World!</h1>
+          <p>This is my first <strong>HTML</strong> paragraph.</p>
+          <a href="#">Click here</a>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="content-box" id="howitworks">
+        <h2>How HTML Works</h2>
+        <p>
+          When you open a web page in your browser, the browser reads the HTML file and renders it visually. The browser does not display the HTML tags themselves, but uses them to determine how to display the content.
+        </p>
+        <div class="highlight-box">
+          🌐 HTML defines the <strong>structure and content</strong> of a page. CSS handles <strong>styling and layout</strong>. JavaScript adds <strong>interactivity</strong>. Together they form the three core technologies of the web.
+        </div>
+        <p>
+          HTML files are plain text files saved with the <strong>.html</strong> or <strong>.htm</strong> extension. You can create an HTML file using any simple text editor such as Notepad (Windows) or VS Code.
+        </p>
+      </div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="nav-footer">
+        <a class="nav-page-btn" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <div>
+            <div class="btn-label">Previous</div>
+            <div class="btn-title">Home</div>
+          </div>
+        </a>
+        <a class="nav-page-btn next" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <div>
+            <div class="btn-label">Next</div>
+            <div class="btn-title">HTML Editors</div>
+          </div>
+        </a>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+      toggle.checked = true;
+    }
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark', toggle.checked);
+      localStorage.setItem('theme', toggle.checked ? 'dark' : 'light');
+    });
+
+    // Sidebar toggle (mobile)
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('visible');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    });
+
+    // Sidebar active link
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Topics bar active
+    document.querySelectorAll('.nav-topics a').forEach(a => {
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('.nav-topics a').forEach(x => x.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Copy code
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre, textarea');
+      const text = pre ? pre.innerText || pre.value : '';
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    // Live code runner
+    function runCode() {
+      const code = document.getElementById('liveCode').value;
+      document.getElementById('outputPreview').innerHTML = code;
+    }
+
+    // Reading progress bar
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = Math.min((scrollTop / docHeight) * 100, 100);
+      document.getElementById('progressBar').style.width = progress + '%';
+    });
+  </script>
+</body>
+</html>
