@@ -47,6 +47,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -130,8 +131,9 @@ img { max-width: 100%; display: block; }
   color: #1e3245;
 }
 .nav-topics a:hover {
-  background: rgba(255,255,255,0.12);
-  color: #1e3245;
+  background: #1e324590;
+  /* color: #1e3245; */
+  color: white;
 }
 
 /* Nav Right */
@@ -359,7 +361,8 @@ img { max-width: 100%; display: block; }
   border-radius: 12px;
   padding: 20px;
   overflow: hidden;
-  width: 1400px;   
+  width: 100%;
+  max-width: 1400px;
   margin: auto;
 }
 
