@@ -541,19 +541,23 @@
     .nav-page-btn svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
 
     /* Progress bar */
+    /* ── FIXED READING PROGRESS BAR ── */
     .progress-bar-wrap {
-      background: var(--border);
-      border-radius: 50px;
-      height: 6px;
-      margin-bottom: 6px;
+      position: fixed;
+      top: calc(var(--topbar-h) + var(--topics-h));
+      left: 0;
+      right: 0;
+      z-index: 180;
+      height: 3px;
+      background: transparent;
       overflow: hidden;
     }
     .progress-bar {
       height: 100%;
       background: var(--accent);
-      border-radius: 50px;
-      width: 8%;
-      transition: width 0.6s ease;
+      width: 0%;
+      transition: width 0.15s ease;
+      box-shadow: 0 0 8px rgba(26,127,168,0.6);
     }
     .progress-label {
       font-size: 12px;
@@ -677,6 +681,11 @@
     <li><a href="#">NextJS</a></li>
     <li><a href="#">Angular</a></li>
   </ul>
+
+  <!-- FIXED READING PROGRESS BAR -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
 
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -845,10 +854,7 @@
         <span>HTML Introduction</span>
       </div>
 
-      <!-- Progress -->
-      <div class="progress-bar-wrap">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
+      <!-- Progress label (the bar itself is fixed at top) -->
       <div class="progress-label">1 of 45 topics completed — Keep going! 🚀</div>
 
       <!-- Title -->
